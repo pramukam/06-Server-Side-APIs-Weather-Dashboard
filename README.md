@@ -9,6 +9,7 @@ https://github.com/pramukam/06-Server-Side-APIs-Weather-Dashboard
 
 Github pages
 
+https://pramukam.github.io/06-Server-Side-APIs-Weather-Dashboard/
 
 ## Project Criteria
 
@@ -28,6 +29,6 @@ THEN I am again presented with current and future conditions for that city
 
 The following image demonstrates the application functionality:
 
-![weather dashboard demo](https://github.com/pramukam/06-Server-Side-APIs-Weather-Dashboard/blob/master/Assets/06-server-side-apis-homework-demo.png)
+![weather dashboard demo](https://github.com/pramukam/06-Server-Side-APIs-Weather-Dashboard/blob/master/Assets/Screen%20Shot%202020-12-24%20at%2012.04.37%20am.png)
 
 
