@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <!-- JQ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+
+    <!-- moment JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
+
+    <!-- Fontawesome -->
+    <script src="https://kit.fontawesome.com/5b51d3a25f.js" crossorigin="anonymous"></script>
+
+    <!-- My CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <title>Hello, world!</title>
+  </head>
+
+
+  <body>
+      <header class="container-fluid">
+    <h1>Weather Dashboard</h1>
+      </header>
+
+<div class="container-fluid">
+    <div class="row">
+
+<!-- Search and history -->
+    <div class="col-sm-4 bg-light" id="historyD">
+        <!-- Search -->
+        <h3>Search for a City:</h3>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2" id="cityName">
+            <button class="btn btn-outline-secondary bg-primary" type="button" id="button-addon2"><i class="fas fa-search"></i></button>
+          </div>
+        <!-- Search Histpry -->
+        <div id="cityH"></div>
+    </div>
+
+<!-- Weather Display -->
+    <div class="col-sm-8" id="currentWeatherD">
+        <h4 id="currentCity"></h4>
+
+<!-- five day forcast Display -->        
+       <div id="forcastD">
+        
+       </div> 
+    </div>
+
+
+    </div>
+
+
+
+
+</div>
+
+
+ <script>
+     
+     var cities = JSON.parse(localStorage.getItem("cities"))||[];
+    
+    cities.forEach(element => {
+         console.log(element)
+
+         var newP = $("<p>");
+            newP.addClass('border checking')
+            // newP.text(response.city.name); 
+            newP.text(element);
+            $('#cityH').append(newP) 
+         
+     });
+    
+     $('button').click(function () {
+        
+     var cityName=$('#cityName').val().toUpperCase();
+     var queryURL = "http://api.openweathermap.org/data/2.5/forecast?q="+cityName+"&appid=70b3e24b2d908843ccaa60ae9e97e68f";
+     
+     
+     $.ajax({
+         url:queryURL,
+         method:'GET'
+     }).then(function (response) {
+        if (cities.indexOf(cityName)===-1) {
+            console.log(response.city.name);
+            // cities.push(response.city.name)
+         cities.push(cityName)
+         localStorage.setItem("cities", JSON.stringify(cities));
+         
+         var newP = $("<p>");
+            newP.addClass('border checking')
+            // newP.text(response.city.name); 
+            newP.text(cityName);
+            $('#cityH').append(newP)  
+        } 
+        // console.log(response.city.name);
+        //  cities.push(response.city.name)
+        //  localStorage.setItem("cities", JSON.stringify(cities));
+         
+        //  var newP = $("<p>");
+        //     newP.addClass('border checking')
+        //     newP.text(response.city.name);
+        //     $('#cityH').append(newP)
+        
+      currentWeather(cityName);
+      fiveDayForcast(cityName);
+
+      $("#cityName").val('');
+      
+     })
+    })
+
+    function currentWeather(cityName) {
+        // var cityName=$('#cityName').val()
+        var queryURL = "http://api.openweathermap.org/data/2.5/weather?q="+cityName+"&units=imperial&appid=70b3e24b2d908843ccaa60ae9e97e68f"
+
+        console.log(queryURL);
+
+        $.ajax({
+            url:queryURL,
+            method:"GET"
+        }).then(function (response) {
+            console.log(response)
+            $("#currentWeatherD").empty()
+
+            var infoDiv = $('<div>');
+                infoDiv.attr('id','currentInfoDiv')
+                infoDiv.addClass('border mb-3 p-3')
+                $("#currentWeatherD").append(infoDiv)
+            var newH4city = $('<h4>')
+                newH4city.text(response.name+"   "+ "("+moment.unix(response.dt).format("MM/DD/YYYY")+")")
+                $(infoDiv).append(newH4city)
+
+            var newImg = $('<img>');
+                newImg.attr('src',"http://openweathermap.org/img/wn/"+response.weather[0].icon+"@2x.png").addClass('img-fluid')
+                $(newH4city).append(newImg);
+
+            var newH4 = $('<p>');
+                newH4.text("Temperature: "+response.main.temp+" ℉")
+                $(infoDiv).append(newH4)
+
+            var newH4 = $('<p>');
+                newH4.text("Humidity: "+response.main.humidity+"%")
+                $(infoDiv).append(newH4)
+
+            var newH4 = $('<p>');
+                newH4.text("Wind Speed: "+response.wind.speed+" MPH")
+                $(infoDiv).append(newH4)
+
+            
+        })
+
+    }
+    
+    function fiveDayForcast(cityName) {
+        // var cityName=$('#cityName').val();
+
+        var queryURL = "http://api.openweathermap.org/data/2.5/weather?q="+cityName+"&units=imperial&appid=70b3e24b2d908843ccaa60ae9e97e68f"
+
+        $.ajax({
+            url:queryURL,
+            method:"GET"
+        }).then(function (response) {
+            var lat = response.coord.lat
+            console.log(lat);
+            var lon = response.coord.lon
+            console.log(lon);
+
+            var queryURL2 = "https://api.openweathermap.org/data/2.5/onecall?lat="+lat+"&lon="+lon+"&exclude=current,minutely,hourly,alerts&units=imperial&appid=70b3e24b2d908843ccaa60ae9e97e68f"
+        console.log("....................................")
+        console.log(queryURL2);
+        
+        $.ajax({
+            url:queryURL2,
+            method:"GET"
+        }).then(function (response2) {
+
+            var forcastDisDiv = $('<div>');
+                // forcastDisDiv.text('testing......');
+                $('#currentWeatherD').append(forcastDisDiv);
+                forcastDisDiv.addClass('row forcastDisp')
+                
+            var fiveDay = $('<h4>');
+                fiveDay.text('5-Day Forcast:');
+                forcastDisDiv.append(fiveDay);
+
+
+            for ( i = 1; i < 6; i++) {
+                console.log(response2.daily[i].dt)
+            console.log(moment.unix(response2.daily[i].dt).format("MM/DD/YYYY"))
+            
+            var iconImg = response2.daily[i].weather[0].icon;
+            console.log(iconImg);
+            
+            
+            var newDiv = $('<div>');
+                newDiv.addClass('col-xl-2 col-lg-4 col-md-4 col-sm-6 col-6 card text-white bg-primary mx-2 mb-2')
+                
+            var newH6 = $('<h6>');
+                newH6.text(moment.unix(response2.daily[i].dt).format("MM/DD/YYYY"));
+            var newImg = $('<img>');
+                newImg.attr('src',"http://openweathermap.org/img/wn/"+iconImg+"@2x.png").addClass('img-fluid')    
+            var newP = $('<p>'); 
+                newP.text("Temp: "+response2.daily[i].temp.day + " °F");
+            var newP1 = $('<p>');
+                newP1.text("Humidity: "+response2.daily[i].humidity+"%")  
+                
+                $(newDiv).append(newH6,newImg,newP,newP1)
+                $(forcastDisDiv).append(newDiv)
+
+                
+            }
+
+            
+
+        // UVI index
+
+            var newUvi = $('<p>');
+                newUvi.text("UV Index "+response2.daily[0].uvi)
+                newUvi.attr("style","width:110px;color:white")
+                $('#currentInfoDiv').append(newUvi)
+
+                console.log(typeof(response2.daily[0].uvi))
+                
+                if (response2.daily[0].uvi < 3) {
+                    newUvi.addClass("bg-success");
+                } else if (response2.daily[0].uvi < 7) {
+                    newUvi.addClass("bg-warning");
+                } else {
+                    newUvi.addClass("bg-danger");
+                }
+        })
+
+        })
+
+
+        // var queryURL2 = "http  s://api.openweathermap.org/data/2.5/onecall?lat="+lat+"&lon="+lon+"&exclude=current,minutely,hourly,alerts&appid=70b3e24b2d908843ccaa60ae9e97e68f"
+        // console.log("test")
+        // console.log(queryURL)
+
+
+        
+    }
+    
+//    var pramu = document.querySelector("#cityH");
+//    pramu.addEventListener("click", function(event) {
+//   var element = event.target;
+
+//   if (element.matches("p")) {
+//     console.log(element.value())
+//   }
+// });
+
+$("#cityH").on("click", "p", function () {
+        console.log($(this).text())
+
+        currentWeather($(this).text());
+        fiveDayForcast($(this).text());
+        
+    });
+    
+    
+ </script>
+</body>

@@ -1,0 +1,21 @@
+header {
+    background-color: #343B40;
+    color: white;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+   
+}
+.card{
+    width: max-content;
+}
+
+.checking:hover{
+    cursor: pointer;  
+}
+
+/* #currentInfoDiv{
+    border: 1px solid red;
+    margin-bottom: 10px;
+   
+} */

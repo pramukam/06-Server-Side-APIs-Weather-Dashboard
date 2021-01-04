@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <!-- JQ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+
+    <!-- moment JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
+
+    <!-- Fontawesome -->
+    <script src="https://kit.fontawesome.com/5b51d3a25f.js" crossorigin="anonymous"></script>
+
+    <!-- My CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <title>Weather Dashboard</title>
+  </head>
+
+
+  <body>
+      <header class="container-fluid">
+    <h1>Weather Dashboard</h1>
+      </header>
+
+<div class="container-fluid">
+    <div class="row">
+
+<!-- Search and history -->
+    <div class="col-sm-4 bg-light" id="historyD">
+        <!-- Search -->
+        <h3>Search for a City:</h3>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2" id="cityName">
+            <button class="btn btn-outline-secondary bg-primary" type="button" id="button-addon2"><i class="fas fa-search"></i></button>
+          </div>
+        <!-- Search Histpry -->
+        <div id="cityH"></div>
+    </div>
+
+<!-- Weather Display -->
+    <div class="col-sm-8" id="currentWeatherD">
+        <h4 id="currentCity"></h4>
+
+<!-- five day forcast Display -->        
+       <div id="forcastD">
+        
+       </div> 
+    </div>
+
+
+    </div>
+
+</div>
+
+
+ <script src="script.js"></script>
+</body>
