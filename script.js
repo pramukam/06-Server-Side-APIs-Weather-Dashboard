@@ -15,7 +15,7 @@ cities.forEach(element => {
  $('button').click(function () {
     
  var cityName=$('#cityName').val().toUpperCase();
- var queryURL = "http://api.openweathermap.org/data/2.5/forecast?q="+cityName+"&appid=70b3e24b2d908843ccaa60ae9e97e68f";
+ var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q="+cityName+"&appid=70b3e24b2d908843ccaa60ae9e97e68f";
  
  
  $.ajax({
@@ -93,7 +93,7 @@ function currentWeather(cityName) {
 function fiveDayForcast(cityName) {
     
 
-    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q="+cityName+"&units=imperial&appid=70b3e24b2d908843ccaa60ae9e97e68f"
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q="+cityName+"&units=imperial&appid=70b3e24b2d908843ccaa60ae9e97e68f"
 
     $.ajax({
         url:queryURL,
